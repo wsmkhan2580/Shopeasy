@@ -231,5 +231,92 @@
   <script src="cart.js"></script>
   <script src="ui.js"></script>
   <script src="script.js"></script>
+  <!-- OTP Verification Modal -->
+<div id="otpModal" style="display: block; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 9999; font-family: Arial;">
+  <div style="background: white; margin: 10% auto; padding: 30px; width: 90%; max-width: 400px; border-radius: 15px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
+    
+    <h2 style="color: #333; margin-bottom: 10px;">🔐 Verify Phone</h2>
+    <p style="color: #666; margin-bottom: 20px;">Enter your mobile number to get OTP</p>
+    
+    <!-- Phone Input -->
+    <div id="phoneSection">
+      <input type="tel" id="phoneInput" placeholder="+91 9876543210" maxlength="13" 
+             style="width: 100%; padding: 15px; margin: 10px 0; border: 2px solid #ddd; border-radius: 10px; font-size: 18px; text-align: center; box-sizing: border-box;">
+      <button onclick="sendOTP()" style="background: linear-gradient(45deg, #4CAF50, #45a049); color: white; padding: 15px 30px; border: none; border-radius: 10px; font-size: 16px; width: 100%; cursor: pointer; font-weight: bold;">
+        📱 Send OTP
+      </button>
+    </div>
+    
+    <!-- OTP Input -->
+    <div id="otpSection" style="display: none;">
+      <p style="color: #4CAF50; font-size: 18px; margin: 10px 0;">Your OTP: <span id="displayOTP" style="font-size: 24px; font-weight: bold; letter-spacing: 5px;">------</span></p>
+      <input type="text" id="userOTP" placeholder="Enter 6 digit OTP" maxlength="6" 
+             style="width: 100%; padding: 15px; margin: 10px 0; border: 2px solid #2196F3; border-radius: 10px; font-size: 20px; text-align: center; letter-spacing: 5px; box-sizing: border-box;">
+      <button onclick="verifyOTP()" style="background: linear-gradient(45deg, #2196F3, #1976D2); color: white; padding: 15px 30px; border: none; border-radius: 10px; font-size: 16px; width: 100%; cursor: pointer; font-weight: bold;">
+        ✅ Verify OTP
+      </button>
+    </div>
+    
+    <div style="margin-top: 20px;">
+      <button onclick="skipOTP()" style="background: #f44336; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 14px;">
+        Skip for now
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+let realOTP = '';
+let phoneNumber = '';
+
+// Generate & Send OTP
+function sendOTP() {
+  phoneNumber = document.getElementById('phoneInput').value;
+  if (phoneNumber.length < 10) {
+    alert('❌ Please enter valid phone number');
+    return;
+  }
+  
+  // Generate 6 digit OTP
+  realOTP = Math.floor(100000 + Math.random() * 900000).toString();
+  document.getElementById('displayOTP').textContent = realOTP;
+  
+  // Switch to OTP input
+  document.getElementById('phoneSection').style.display = 'none';
+  document.getElementById('otpSection').style.display = 'block';
+  
+  alert(`✅ OTP sent to ${phoneNumber}
+OTP: ${realOTP}
+(Production me SMS API lagega)`);
+}
+
+// Verify OTP
+function verifyOTP() {
+  const userOTP = document.getElementById('userOTP').value;
+  
+  if (userOTP === realOTP) {
+    document.getElementById('otpModal').style.display = 'none';
+    alert('🎉 Verified successfully! Welcome to ShopEasy78 🚀');
+    // Yahan tumhara main site content accessible ho jayega
+    localStorage.setItem('verified', 'true');
+  } else {
+    alert('❌ Wrong OTP! Try again.');
+    document.getElementById('userOTP').value = '';
+  }
+}
+
+// Skip OTP (Demo ke liye)
+function skipOTP() {
+  document.getElementById('otpModal').style.display = 'none';
+  localStorage.setItem('verified', 'true');
+}
+
+// Page load pe OTP show karo
+window.onload = function() {
+  if (localStorage.getItem('verified') !== 'true') {
+    document.getElementById('otpModal').style.display = 'block';
+  }
+};
+      </script>
 </body>
 </html>
