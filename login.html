@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Stylish E-Commerce Login & Signup</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: linear-gradient(135deg, #eaf2f8 0%, #d6eaf8 40%, #fff 100%);
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+    .center-box {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .auth-container {
+      position: relative;
+      width: 400px;
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 18px 48px rgba(20,60,160,0.15);
+      overflow: hidden;
+      padding: 48px 36px 36px 36px;
+      animation: showBox 0.75s cubic-bezier(.7,-0.5,.25,1.5);
+    }
+    @keyframes showBox {
+      from {transform: translateY(-100px) scale(0.95); opacity: 0;}
+      to {transform: translateY(0) scale(1); opacity: 1;}
+    }
+    .logo-wrap {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .logo-wrap h1 {
+      font-size: 28px;
+      font-weight: 800;
+      color:#667eea;
+      margin: 0;
+      user-select: none;
+    }
+    .tabs {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 22px;
+      margin: 24px 0 24px 0;
+    }
+    .tab-btn {
+      font-size: 17px;
+      font-weight: 700;
+      background: transparent;
+      border: none;
+      color: #667eea;
+      cursor: pointer;
+      padding: 10px 22px;
+      border-radius: 7px 7px 0 0;
+      position: relative;
+      transition: color .22s;
+    }
+    .tab-btn.active {
+      color: #667eea;
+      border-bottom: 3.2px solid #287bff;
+      background: #eaf3ff;
+      box-shadow: 0 4px 12px #1c6cff17;
+    }
+    .form-wrap {
+      animation: fadeFormIn .65s;
+    }
+    @keyframes fadeFormIn {
+      0% {opacity: 0; transform: scale(0.97);}
+      100% {opacity: 1; transform: scale(1);}
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      margin-bottom: 0;
+    }
+    form input {
+      padding: 14px 16px;
+      border-radius: 8px;
+      border: 1.8px solid #c7d0ea;
+      font-size: 17px;
+      background: #f5f7fc;
+      transition: border-color 0.27s;
+    }
+    form input:focus {
+      border-color: #1c6cff;
+      background: #f1f7ff;
+      outline: none;
+    }
+    form button {
+      padding: 15px;
+      font-size: 18px;
+      font-weight: 700;
+      border-radius: 8px;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 6px 18px #287bff33;
+      transition: background 0.28s;
+      letter-spacing: 0.03em;
+    }
+    .btn-blue { background: linear-gradient(#198754);}
+    .btn-blue:hover { background:#0d6efd; }
+    .btn-green { background: linear-gradient(90deg,#198754 70%,#23b57a 98%);}
+    .btn-green:hover { background:#198754;}
+    .error {
+      color:#eb2f2f;
+      font-weight:600;
+      padding:6px 10px;
+      border-radius:6px;
+      text-align:center;
+    }
+    .success{
+      color:#15803d;
+      background:#cbffde;
+      font-weight:600;
+      padding:6px 10px;
+      border-radius:6px;
+      text-align:center;
+    }
+    @media(max-width:460px){
+      .auth-container{width:98vw; padding:28px 20px;}
+    }
+  </style>
+</head>
+<body>
+<section class="center-box">
+  <div class="auth-container">
+    <div class="logo-wrap">
+      <h1>Step Into Smarter Shopping  Login & Sign Up
+</h1>
+    </div>
+    <div class="tabs">
+      <button id="logTab" class="tab-btn active" onclick="showTab('login')">Login</button>
+      <button id="signTab" class="tab-btn" onclick="showTab('signup')">Sign Up</button>
+    </div>
+    <div id="loginWrap" class="form-wrap">
+      <form id="loginForm">
+        <input type="email" id="loginEmail" placeholder="Email address" required />
+        <input type="password" id="loginPassword" placeholder="Password" required />
+        <button type="submit" class="btn-blue">Log In</button>
+        <p id="loginError" class="error"></p>
+      </form>
+    </div>
+    <div id="signupWrap" class="form-wrap" style="display:none;">
+      <form id="signupForm">
+        <input type="text" id="signupName" placeholder="Full Name" required />
+        <input type="email" id="signupEmail" placeholder="Email Address" required />
+        <input type="password" id="signupPassword" placeholder="Password (min 6 chars)" required />
+        <input type="password" id="signupConfirmPassword" placeholder="Confirm Password" required />
+        <button type="submit" class="btn-green">Sign Up</button>
+        <p id="signupError" class="error"></p>
+      </form>
+    </div>
+  </div>
+</section>
+<script>
+const users = [];
+function showTab(tab){
+  document.getElementById('loginWrap').style.display = tab === 'login' ? 'block' : 'none';
+  document.getElementById('signupWrap').style.display = tab === 'signup' ? 'block' : 'none';
+  document.getElementById('logTab').classList.toggle('active',tab==='login');
+  document.getElementById('signTab').classList.toggle('active',tab==='signup');
+  document.getElementById('loginError').textContent = '';
+  document.getElementById('signupError').textContent = '';
+}
+showTab('login');
+document.getElementById('signupForm').addEventListener('submit',function(e){
+  e.preventDefault();
+  const name=document.getElementById('signupName').value.trim();
+  const email=document.getElementById('signupEmail').value.trim();
+  const password=document.getElementById('signupPassword').value;
+  const confirmPassword=document.getElementById('signupConfirmPassword').value;
+  const error=document.getElementById('signupError');
+  error.textContent="";
+  if(name.length<3){error.textContent='Name at least 3 chars.';return;}
+  if(!validateEmail(email)){error.textContent='Valid email needed.';return;}
+  if(password.length<6){error.textContent='Min 6 char password.';return;}
+  if(password !== confirmPassword){error.textContent='Passwords not match.';return;}
+  if(users.some(u=>u.email===email)){error.textContent='Email already registered.';return;}
+  users.push({name,email,password});
+  error.classList.remove('error');
+  error.classList.add('success');
+  error.textContent='Signup successful! Now login.';
+  document.getElementById('signupForm').reset();
+  setTimeout(()=>{showTab('login');error.textContent="";error.classList.remove('success');error.classList.add('error');},1700);
+});
+document.getElementById('loginForm').addEventListener('submit',function(e){
+  e.preventDefault();
+  const email=document.getElementById('loginEmail').value.trim();
+  const password=document.getElementById('loginPassword').value;
+  const error=document.getElementById('loginError');
+  error.textContent="";
+  const user=users.find(u=>u.email===email&&u.password===password);
+  if(user){
+    error.classList.remove('error');
+    error.classList.add('success');
+    error.textContent='Login successful! Redirecting...';
+    setTimeout(()=>{window.location.href='index.html';},1400);
+  }else{
+    error.classList.remove('success');
+    error.classList.add('error');
+    error.textContent='Invalid email or password.';
+  }
+});
+function validateEmail(email){return /\S+@\S+\.\S+/.test(email);}
+</script>
+</body>
+</html>

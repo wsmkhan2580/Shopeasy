@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ShopEasy</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="navbaar.css" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+</head>
+<body>
+<a href="login.html"></a>
+  <header>
+    <nav class="navbar">
+      <div class="nav-container">
+        <div class="nav-brand">
+          <div class="logo-icon"><i class="fas fa-shopping-bag"></i></div>
+          <h1>ShopEasy</h1>
+        </div>
+        <ul class="nav-links">
+        
+          <li><a href="index.html" class="nav-link">Home</a></li>
+          <li><a href="products.html" class="nav-link">Products</a></li>
+          <li class="dropdown">
+            <a href="#" class="dropbtn nav-link">Categories <i class="fas fa-chevron-down"></i></a>
+            <div class="dropdown-content">
+              <a href="#" onclick="showCategory('all')"><i class="fas fa-list"></i> All Products</a>
+              <a href="#" onclick="showCategory('fashion')"><i class="fas fa-tshirt"></i> Fashion</a>
+              <a href="#" onclick="showCategory('electronics')"><i class="fas fa-laptop"></i> Electronics</a>
+              <a href="#" onclick="showCategory('sports')"><i class="fas fa-dumbbell"></i> Sports</a>
+              <a href="#" onclick="showCategory('beauty')"><i class="fas fa-spa"></i> Beauty</a>
+              <a href="#" onclick="showCategory('books')"><i class="fas fa-book"></i> Books</a>
+            </div>
+          </li>
+        </ul>
+        <div class="nav-right">
+          <form class="search-form" onsubmit="event.preventDefault(); doSearch();">
+            <div class="search-container">
+              <input type="text" id="search-input" placeholder="Search products..." />
+              <button type="submit"><i class="fas fa-search"></i></button>
+            </div>
+          </form>
+          <a href="cart.html" class="cart-icon">
+            <i class="fas fa-shopping-cart"></i><span id="cart-count">0</span>
+          </a>
+          <button class="mobile-menu-btn"><i class="fas fa-bars"></i></button>
+        </div>
+      </div>
+      <div class="mobile-menu">
+        <ul class="mobile-nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="products.html">Products</a></li>
+          <li><a href="#" onclick="showCategory('all')">All Products</a></li>
+          <li><a href="#" onclick="showCategory('fashion')">Fashion</a></li>
+          <li><a href="#" onclick="showCategory('electronics')">Electronics</a></li>
+          <li><a href="#" onclick="showCategory('sports')">Sports</a></li>
+          <li><a href="#" onclick="showCategory('beauty')">Beauty</a></li>
+          <li><a href="#" onclick="showCategory('books')">Books</a></li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <img src="https://images.unsplash.com/photo-1607083206869-4c7672e72a8a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="Shop banner" />
+    <a href="products.html" class="btn">Shop Now</a>
+  </section>
+
+  <main class="home-products">
+    <!-- Fashion -->
+    <section id="category-fashion" class="category-section">
+      <h3>Fashion</h3>
+      <div class="product-grid">
+        <div class="product-card">
+          <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Stylish T-Shirt" />
+          <h3>Stylish T-Shirt</h3><p>$25</p><button id="fashion1" onclick="addToCart('Stylish T-Shirt', 25, 'fashion1')">Add to Cart</button>
+        </div>
+        <div class="product-card">
+          <img src="https://images.unsplash.com/photo-1595777457583-95e059d581b8?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Elegant Dress" />
+          <h3>Elegant Dress</h3><p>$40</p><button id="fashion2" onclick="addToCart('Elegant Dress', 40, 'fashion2')">Add to Cart</button>
+        </div>
+        <div class="product-card">
+          <img src="https://images.unsplash.com/photo-1542272604-787c3835535d?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Denim Jeans" />
+          <h3>Denim Jeans</h3><p>$45</p><button id="fashion3" onclick="addToCart('Denim Jeans', 45, 'fashion3')">Add to Cart</button>
+        </div>
+        <div class="product-card">
+          <img src="https://images.unsplash.com/photo-1551028719-00167b16eac5?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Leather Jacket" />
+          <h3>Leather Jacket</h3><p>$75</p><button id="fashion4" onclick="addToCart('Leather Jacket', 75, 'fashion4')">Add to Cart</button>
+        </div>
+        <div class="product-card">
+          <img src="https://images.unsplash.com/photo-1549298916-b41d501d3772?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Sneakers" />
+          <h3>Sneakers</h3><p>$55</p><button id="fashion5" onclick="addToCart('Sneakers', 55, 'fashion5')">Add to Cart</button>
+        </div>
+        <div class="product-card">
+          <img src="https://images.unsplash.com/photo-1514327605112-b887c0e61c0a?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Summer Hat" />
+          <h3>Summer Hat</h3><p>$20</p><button id="fashion6" onclick="addToCart('Summer Hat', 20, 'fashion6')">Add to Cart</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Electronics -->
+    <section id="category-electronics" class="category-section">
+      <h3>Electronics</h3>
+      <div class="product-grid">
+        <div class="product-card">
+          <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Smartphone" />
+          <h3>Smartphone</h3><p>$300</p><button id="electronics1" onclick="addToCart('Smartphone', 300, 'electronics1')">Add to Cart</button>
+        </div>
+        <div class="product-card">
+          <img src="https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Bluetooth Speaker" />
+          <h3>Bluetooth Speaker</h3><p>$150</p><button id="electronics2" onclick="addToCart('Bluetooth Speaker', 150, 'electronics2')">Add to Cart</button>
+        </div>
+        <div class="product-card">
+          <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Smart Watch" />
+          <h3>Smart Watch</h3><p>$80</p><button id="electronics3" onclick="addToCart('Smart Watch', 80, 'electronics3')">Add to Cart</button>
+        </div>
+        <div class="product-card">
+          <img src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Laptop" />
+          <h3>Laptop</h3><p>$900</p><button id="electronics4" onclick="addToCart('Laptop', 900, 'electronics4')">Add to Cart</button>
+        </div>
+        <div class="product-card">
+          <img src="https://images.unsplash.com/photo-1590658268037-6bf12165a8df?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Wireless Earbuds" />
+          <h3>Wireless Earbuds</h3><p>$100</p><button id="electronics5" onclick="addToCart('Wireless Earbuds', 100, 'electronics5')">Add to Cart</button>
+        </div>
+        <div class="product-card">
+          <img src="https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Tablet" />
+          <h3>Tablet</h3><p>$250</p><button id="electronics6" onclick="addToCart('Tablet', 250, 'electronics6')">Add to Cart</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sports -->
+    <section id="category-sports" class="category-section">
+      <h3>Sports</h3>
+      <div class="product-grid">
+        <div class="product-card">
+          <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Football" />
+          <h3>Football</h3><p>$30</p><button id="sports1" onclick="addToCart('Football', 30, 'sports1')">Add to Cart</button>
+        </div>
+        <div class="product-card">
+          <img src="https://images.unsplash.com/photo-1622279457486-62dcc4a431d6?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Tennis Racket" />
+          <h3>Tennis Racket</h3><p>$75</p><button id="sports2" onclick="addToCart('Tennis Racket', 75, 'sports2')">Add to Cart</button>
+        </div>
+        <div class="product-card">
+          <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Yoga Mat" />
+          <h3>Yoga Mat</h3><p>$20</p><button id="sports3" onclick="addToCart('Yoga Mat', 20, 'sports3')">Add to Cart</button>
+        </div>
+        <div class="product-card">
+          <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Dumbbell Set" />
+          <h3>Dumbbell Set</h3><p>$90</p><button id="sports4" onclick="addToCart('Dumbbell Set', 90, 'sports4')">Add to Cart</button>
+        </div>
+        <div class="product-card">
+          <img src="https://images.unsplash.com/photo-1546519638-68e109498ffc?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Basketball" />
+          <h3>Basketball</h3><p>$25</p><button id="sports5" onclick="addToCart('Basketball', 25, 'sports5')">Add to Cart</button>
+        </div>
+        <div class="product-card">
+          <img src="https://images.unsplash.com/photo-1544966503-7cc5ac882d5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Running Shoes" />
+          <h3>Running Shoes</h3><p>$55</p><button id="sports6" onclick="addToCart('Running Shoes', 55, 'sports6')">Add to Cart</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Beauty -->
+    <section id="category-beauty" class="category-section">
+      <h3>Beauty</h3>
+      <div class="product-grid">
+        <div class="product-card">
+          <img src="https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Face Cream" />
+          <h3>Face Cream</h3><p>$12</p><button id="beauty1" onclick="addToCart('Face Cream', 12, 'beauty1')">Add to Cart</button>
+        </div>
+        <div class="product-card">
+          <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Nail Polish" />
+          <h3>Nail Polish</h3><p>$10</p><button id="beauty2" onclick="addToCart('Nail Polish', 10, 'beauty2')">Add to Cart</button>
+        </div>
+        <div class="product-card">
+          <img src="https://images.unsplash.com/photo-1522338242992-e1a54906a8da?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Hair Serum" />
+          <h3>Hair Serum</h3><p>$20</p><button id="beauty3" onclick="addToCart('Hair Serum', 20, 'beauty3')">Add to Cart</button>
+        </div>
+        <div class="product-card">
+          <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Nail Polish" />
+          <h3>Nail Polish</h3><p>$10</p><button id="beauty4" onclick="addToCart('Nail Polish', 10, 'beauty4')">Add to Cart</button>
+        </div>
+        <div class="product-card">
+          <img src="https://images.unsplash.com/photo-1556228578-626910cbacb2?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Sunscreen" />
+          <h3>Sunscreen</h3><p>$18</p><button id="beauty5" onclick="addToCart('Sunscreen', 18, 'beauty5')">Add to Cart</button>
+        </div>
+        <div class="product-card">
+          <img src="https://images.unsplash.com/photo-1541643600914-78b084683601?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Perfume" />
+          <h3>Perfume</h3><p>$50</p><button id="beauty6" onclick="addToCart('Perfume', 50, 'beauty6')">Add to Cart</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Books -->
+    <section id="category-books" class="category-section">
+      <h3>Books</h3>
+      <div class="product-grid">
+        <div class="product-card">
+          <img src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Fiction Novel" />
+          <h3>Fiction Novel</h3><p>$15</p><button id="books1" onclick="addToCart('Fiction Novel', 15, 'books1')">Add to Cart</button>
+        </div>
+        <div class="product-card">
+          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Science Textbook" />
+          <h3>Science Textbook</h3><p>$30</p><button id="books2" onclick="addToCart('Science Textbook', 30, 'books2')">Add to Cart</button>
+        </div>
+        <div class="product-card">
+          <img src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Biographies" />
+          <h3>Biographies</h3><p>$20</p><button id="books3" onclick="addToCart('Biographies', 20, 'books3')">Add to Cart</button>
+        </div>
+        <div class="product-card">
+          <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Cookbook" />
+          <h3>Cookbook</h3><p>$25</p><button id="books4" onclick="addToCart('Cookbook', 25, 'books4')">Add to Cart</button>
+        </div>
+        <div class="product-card">
+          <img src="https://images.unsplash.com/photo-1543002588-bfa74002ed7e?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Self-help Guide" />
+          <h3>Self-help Guide</h3><p>$18</p><button id="books5" onclick="addToCart('Self-help Guide', 18, 'books5')">Add to Cart</button>
+        </div>
+        <div class="product-card">
+          <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" alt="Travel Journal" />
+          <h3>Travel Journal</h3><p>$22</p><button id="books6" onclick="addToCart('Travel Journal', 22, 'books6')">Add to Cart</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="categories.js"></script>
+  <script src="main.js"></script>
+  <script src="cart.js"></script>
+  <script src="ui.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
