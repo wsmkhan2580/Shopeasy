@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Stylish E-Commerce Login & Signup</title>
+  <title>ShopEasy78 - Phone Login</title>
   <style>
     body {
       font-family: 'Segoe UI', Arial, sans-serif;
@@ -11,6 +11,7 @@
       margin: 0;
       padding: 0;
       overflow: hidden;
+      height: 100vh;
     }
     .center-box {
       min-height: 100vh;
@@ -105,30 +106,35 @@
       border: none;
       cursor: pointer;
       box-shadow: 0 6px 18px #287bff33;
-      transition: background 0.28s;
+      transition: background 0.28s, transform 0.2s;
       letter-spacing: 0.03em;
     }
-    .btn-blue { background: linear-gradient(#198754);}
-    .btn-blue:hover { background:#0d6efd; }
-    .btn-green { background: linear-gradient(90deg,#198754 70%,#23b57a 98%);}
-    .btn-green:hover { background:#198754;}
+    .btn-blue { background: linear-gradient(90deg, #0d6efd 0%, #198754 100%); }
+    .btn-blue:hover { background: linear-gradient(90deg, #0b5ed7 0%, #146c46 100%); transform: translateY(-2px); }
+    .btn-green { background: linear-gradient(90deg, #198754 0%, #23b57a 100%); }
+    .btn-green:hover { background: linear-gradient(90deg, #146c46 0%, #1d9a67 100%); transform: translateY(-2px); }
     .error {
-      color:#eb2f2f;
-      font-weight:600;
-      padding:6px 10px;
-      border-radius:6px;
-      text-align:center;
+      color: #eb2f2f;
+      font-weight: 600;
+      padding: 6px 10px;
+      border-radius: 6px;
+      text-align: center;
+      background: #fee;
+      border: 1px solid #fcc;
     }
-    .success{
-      color:#15803d;
-      background:#cbffde;
-      font-weight:600;
-      padding:6px 10px;
-      border-radius:6px;
-      text-align:center;
+    .success {
+      color: #15803d;
+      background: #cbffde;
+      font-weight: 600;
+      padding: 6px 10px;
+      border-radius: 6px;
+      text-align: center;
+      border: 1px solid #9fe;
     }
+    .otp-section { display: none; }
+    .phone-input { font-size: 18px !important; }
     @media(max-width:460px){
-      .auth-container{width:98vw; padding:28px 20px;}
+      .auth-container { width: 98vw; padding: 28px 20px; }
     }
   </style>
 </head>
@@ -136,83 +142,107 @@
 <section class="center-box">
   <div class="auth-container">
     <div class="logo-wrap">
-      <h1>Step Into Smarter Shopping  Login & Sign Up
-</h1>
+      <h1>ShopEasy78</h1>
     </div>
+    
+    <!-- Phone Login Tab -->
     <div class="tabs">
-      <button id="logTab" class="tab-btn active" onclick="showTab('login')">Login</button>
-      <button id="signTab" class="tab-btn" onclick="showTab('signup')">Sign Up</button>
+      <button id="phoneTab" class="tab-btn active" onclick="showTab('phone')">Phone Login</button>
     </div>
-    <div id="loginWrap" class="form-wrap">
-      <form id="loginForm">
-        <input type="email" id="loginEmail" placeholder="Email address" required />
-        <input type="password" id="loginPassword" placeholder="Password" required />
-        <button type="submit" class="btn-blue">Log In</button>
-        <p id="loginError" class="error"></p>
+    
+    <!-- Phone Number Form -->
+    <div id="phoneWrap" class="form-wrap">
+      <form id="phoneForm">
+        <input type="tel" id="phoneNumber" class="phone-input" placeholder="+91 9876543210" maxlength="13" required />
+        <button type="submit" class="btn-blue">📱 Send OTP</button>
+        <p id="phoneError" class="error"></p>
       </form>
     </div>
-    <div id="signupWrap" class="form-wrap" style="display:none;">
-      <form id="signupForm">
-        <input type="text" id="signupName" placeholder="Full Name" required />
-        <input type="email" id="signupEmail" placeholder="Email Address" required />
-        <input type="password" id="signupPassword" placeholder="Password (min 6 chars)" required />
-        <input type="password" id="signupConfirmPassword" placeholder="Confirm Password" required />
-        <button type="submit" class="btn-green">Sign Up</button>
-        <p id="signupError" class="error"></p>
+    
+    <!-- OTP Verification -->
+    <div id="otpWrap" class="form-wrap otp-section">
+      <p style="text-align: center; color: #666; margin-bottom: 20px;">OTP sent to <span id="phoneDisplay" style="font-weight: bold; color: #667eea;"></span></p>
+      <form id="otpForm">
+        <input type="text" id="otpInput" placeholder="Enter 6 digit OTP" maxlength="6" required />
+        <button type="submit" class="btn-green">✅ Verify & Login</button>
+        <p id="otpError" class="error"></p>
       </form>
+    </div>
+    
+    <!-- Success -->
+    <div id="successWrap" class="form-wrap" style="display: none;">
+      <h2 style="color: #198754; text-align: center;">✅ Welcome!</h2>
+      <p style="text-align: center; color: #666;">Login successful!</p>
+      <a href="index.html" style="text-decoration: none;">
+        <button class="btn-blue" style="width: 100%; margin-top: 20px;">🚀 Go to Shop</button>
+      </a>
     </div>
   </div>
 </section>
+
 <script>
-const users = [];
-function showTab(tab){
-  document.getElementById('loginWrap').style.display = tab === 'login' ? 'block' : 'none';
-  document.getElementById('signupWrap').style.display = tab === 'signup' ? 'block' : 'none';
-  document.getElementById('logTab').classList.toggle('active',tab==='login');
-  document.getElementById('signTab').classList.toggle('active',tab==='signup');
-  document.getElementById('loginError').textContent = '';
-  document.getElementById('signupError').textContent = '';
+let currentOTP = '';
+let currentPhone = '';
+
+// FAST2SMS API KEY (Yahan apna API key dalo)
+const FAST2SMS_API ='kxQUAjP2V7US2W0wDcYTqR8SHSQtEcHpS6u9hFQRSIkAI4ha1cJF88lgPagP'; 'YOUR_FAST2SMS_API_KEY_HERE'; // fast2sms.com se copy karo
+
+function showTab(tab) {
+  document.getElementById('phoneWrap').style.display = tab === 'phone' ? 'block' : 'none';
+  document.getElementById('otpWrap').style.display = tab === 'otp' ? 'block' : 'none';
+  document.getElementById('successWrap').style.display = tab === 'success' ? 'block' : 'none';
+  document.getElementById('phoneTab').classList.toggle('active', tab === 'phone');
 }
-showTab('login');
-document.getElementById('signupForm').addEventListener('submit',function(e){
+
+document.getElementById('phoneForm').addEventListener('submit', async function(e) {
   e.preventDefault();
-  const name=document.getElementById('signupName').value.trim();
-  const email=document.getElementById('signupEmail').value.trim();
-  const password=document.getElementById('signupPassword').value;
-  const confirmPassword=document.getElementById('signupConfirmPassword').value;
-  const error=document.getElementById('signupError');
-  error.textContent="";
-  if(name.length<3){error.textContent='Name at least 3 chars.';return;}
-  if(!validateEmail(email)){error.textContent='Valid email needed.';return;}
-  if(password.length<6){error.textContent='Min 6 char password.';return;}
-  if(password !== confirmPassword){error.textContent='Passwords not match.';return;}
-  if(users.some(u=>u.email===email)){error.textContent='Email already registered.';return;}
-  users.push({name,email,password});
-  error.classList.remove('error');
-  error.classList.add('success');
-  error.textContent='Signup successful! Now login.';
-  document.getElementById('signupForm').reset();
-  setTimeout(()=>{showTab('login');error.textContent="";error.classList.remove('success');error.classList.add('error');},1700);
-});
-document.getElementById('loginForm').addEventListener('submit',function(e){
-  e.preventDefault();
-  const email=document.getElementById('loginEmail').value.trim();
-  const password=document.getElementById('loginPassword').value;
-  const error=document.getElementById('loginError');
-  error.textContent="";
-  const user=users.find(u=>u.email===email&&u.password===password);
-  if(user){
-    error.classList.remove('error');
-    error.classList.add('success');
-    error.textContent='Login successful! Redirecting...';
-    setTimeout(()=>{window.location.href='index.html';},1400);
-  }else{
-    error.classList.remove('success');
-    error.classList.add('error');
-    error.textContent='Invalid email or password.';
+  const phone = document.getElementById('phoneNumber').value.replace('+91', '').trim();
+  
+  if (phone.length !== 10) {
+    document.getElementById('phoneError').textContent = 'Please enter valid 10 digit number';
+    return;
+  }
+  
+  currentPhone = '+91' + phone;
+  document.getElementById('phoneDisplay').textContent = currentPhone;
+  
+  // Generate OTP
+  currentOTP = Math.floor(100000 + Math.random() * 900000).toString();
+  
+  // Send SMS via Fast2SMS
+  try {
+    const response = await fetch(`https://www.fast2sms.com/dev/bulkV2?authorization=${FAST2SMS_API}&route=otp&sender_id=TXTIND&message=Your ShopEasy78 OTP is ${currentOTP}. Valid for 5 minutes.&numbers=${phone}`);
+    const data = await response.json();
+    
+    if (data.success === 'true') {
+      showTab('otp');
+      document.getElementById('phoneError').textContent = '';
+    } else {
+      document.getElementById('phoneError').textContent = 'SMS failed! Check API credits';
+    }
+  } catch (error) {
+    document.getElementById('phoneError').textContent = 'Network error! Try again';
   }
 });
-function validateEmail(email){return /\S+@\S+\.\S+/.test(email);}
+
+document.getElementById('otpForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const userOTP = document.getElementById('otpInput').value;
+  
+  if (userOTP === currentOTP) {
+    localStorage.setItem('loggedIn', 'true');
+    localStorage.setItem('phone', currentPhone);
+    showTab('success');
+  } else {
+    document.getElementById('otpError').textContent = 'Wrong OTP! Try again';
+    document.getElementById('otpInput').value = '';
+  }
+});
+
+// Check if already logged in
+if (localStorage.getItem('loggedIn') === 'true') {
+  showTab('success');
+}
 </script>
 </body>
-</html>
+  </html>
