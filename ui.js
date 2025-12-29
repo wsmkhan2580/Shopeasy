@@ -3,27 +3,52 @@
 function doSearch() {
   const searchTerm = document.getElementById('search-input').value.trim().toLowerCase();
   if (!searchTerm) {
+    // If search box is empty, show all product cards
+    document.querySelectorAll('.product-card').forEach(card => card.style.display = 'block');
     return;
   }
+
   const products = document.querySelectorAll('.product-card');
   let found = false;
+
   products.forEach(card => {
     const name = card.querySelector('h3').textContent.toLowerCase();
-    if (name.includes(searchTerm)) {
+
+    // Normalize spaces, remove extra white spaces, ignore case for matching
+    const normalizedProductName = name.replace(/\s+/g, ' ').trim();
+    const normalizedSearchTerm = searchTerm.replace(/\s+/g, ' ').trim();
+
+    if (normalizedProductName.includes(normalizedSearchTerm)) {
       card.style.display = 'block';
       found = true;
     } else {
       card.style.display = 'none';
     }
   });
+
+  // Optional: If no product found, show a message or reset visibility
   if (!found) {
+    // Show all products if none matched or you can show a message
     products.forEach(card => card.style.display = 'block');
   }
 }
 
-function showCategory(category) {
-  // Implement your filtering or navigation logic
+function showCategory(cat) {
+  // Select all category-section elements
+  const categories = document.querySelectorAll('.category-section');
+
+  categories.forEach(section => {
+    // Show the selected category section, hide others
+    if (section.id === 'category-' + cat) {
+      section.style.display = 'block';
+    } else {
+      section.style.display = 'none';
+    }
+  });
 }
+
+// Show 'fashion' category by default when page loads
+
 
 function toggleMobileMenu() {
   const menu = document.querySelector('.mobile-menu');
@@ -54,3 +79,4 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 });
+
