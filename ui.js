@@ -1,24 +1,30 @@
-// UI related functionality
-
+// =======================
+// SEARCH (OVERRIDES CATEGORY)
+// =======================
 function doSearch() {
   const searchTerm = document.getElementById('search-input').value.trim().toLowerCase();
+  const products = document.querySelectorAll('.product-card');
+  const sections = document.querySelectorAll('.category-section');
+  const noResults = document.getElementById('no-results');
+
+  let found = false;
+
+  // 🔥 FORCE SHOW ALL SECTIONS (THIS IS THE FIX)
+  sections.forEach(section => {
+    section.style.display = 'block';
+  });
+
+  // Empty search → show everything
   if (!searchTerm) {
-    // If search box is empty, show all product cards
-    document.querySelectorAll('.product-card').forEach(card => card.style.display = 'block');
+    products.forEach(card => card.style.display = 'block');
+    if (noResults) noResults.style.display = 'none';
     return;
   }
-
-  const products = document.querySelectorAll('.product-card');
-  let found = false;
 
   products.forEach(card => {
     const name = card.querySelector('h3').textContent.toLowerCase();
 
-    // Normalize spaces, remove extra white spaces, ignore case for matching
-    const normalizedProductName = name.replace(/\s+/g, ' ').trim();
-    const normalizedSearchTerm = searchTerm.replace(/\s+/g, ' ').trim();
-
-    if (normalizedProductName.includes(normalizedSearchTerm)) {
+    if (name.includes(searchTerm)) {
       card.style.display = 'block';
       found = true;
     } else {
@@ -26,34 +32,40 @@ function doSearch() {
     }
   });
 
-  // Optional: If no product found, show a message or reset visibility
-  if (!found) {
-    // Show all products if none matched or you can show a message
-    products.forEach(card => card.style.display = 'block');
+  if (noResults) {
+    noResults.style.display = found ? 'none' : 'block';
   }
 }
 
-function showCategory(cat) {
-  // Select all category-section elements
-  const categories = document.querySelectorAll('.category-section');
+// =======================
+// CATEGORY FILTER
+// =======================
+function showCategory(category) {
+  const sections = document.querySelectorAll('.category-section');
+  const noResults = document.getElementById('no-results');
 
-  categories.forEach(section => {
-    // Show the selected category section, hide others
-    if (section.id === 'category-' + cat) {
-      section.style.display = 'block';
-    } else {
-      section.style.display = 'none';
-    }
+  sections.forEach(section => {
+    section.style.display =
+      section.id === `category-${category}` ? 'block' : 'none';
   });
+
+  if (noResults) noResults.style.display = 'none';
+
+  // clear search
+  const input = document.getElementById('search-input');
+  if (input) input.value = '';
 }
 
-// Show 'fashion' category by default when page loads
-
-
+// =======================
+// MOBILE MENU
+// =======================
 function toggleMobileMenu() {
   const menu = document.querySelector('.mobile-menu');
   const btn = document.querySelector('.mobile-menu-btn i');
-  if(menu.classList.contains('active')) {
+
+  if (!menu || !btn) return;
+
+  if (menu.classList.contains('active')) {
     menu.classList.remove('active');
     btn.classList.replace('fa-times', 'fa-bars');
   } else {
@@ -62,21 +74,19 @@ function toggleMobileMenu() {
   }
 }
 
+// =======================
+// DOM READY
+// =======================
 document.addEventListener('DOMContentLoaded', () => {
-  // Mobile menu toggle button
   const menuBtn = document.querySelector('.mobile-menu-btn');
-  if(menuBtn) {
-    menuBtn.addEventListener('click', toggleMobileMenu);
-  }
+  if (menuBtn) menuBtn.addEventListener('click', toggleMobileMenu);
 
-  // Close mobile menu on link click
   document.querySelectorAll('.mobile-nav-links a').forEach(link => {
     link.addEventListener('click', () => {
       const menu = document.querySelector('.mobile-menu');
       const btn = document.querySelector('.mobile-menu-btn i');
-      if(menu) menu.classList.remove('active');
-      if(btn) btn.classList.replace('fa-times', 'fa-bars');
+      if (menu) menu.classList.remove('active');
+      if (btn) btn.classList.replace('fa-times', 'fa-bars');
     });
   });
 });
-
